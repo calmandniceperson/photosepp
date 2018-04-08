@@ -19,8 +19,12 @@ def resource_path(relative_path):  # needed for bundling
 
 def main():
     base_dir_path = input("Enter the path: ")
-    base_dir_path = resource_path(base_dir_path.strip() + "/*")
-    print(base_dir_path)
+    base_dir_path = base_dir_path.strip()
+    base_dir_path = base_dir_path.replace('\\', '')
+    if not os.path.exists(base_dir_path):
+        print("Path doesn't exist")
+        return
+    base_dir_path += "/*"
 
     files = glob.glob(base_dir_path)
     for name in files:
