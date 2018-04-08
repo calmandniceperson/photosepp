@@ -6,7 +6,7 @@ import piexif
 import glob
 import os
 
-MANUFACTURER_KEY = "Make"
+MODEL_KEY = "Model"
 _IS_MAC = platform.system() == 'Darwin'
 
 def resource_path(relative_path):  # needed for bundling
@@ -40,9 +40,10 @@ def main():
         exif_dict = piexif.load(name)
         for ifd in ("0th", "Exif", "GPS", "1st"):
             for tag in exif_dict[ifd]:
-                if (piexif.TAGS[ifd][tag]["name"] is MANUFACTURER_KEY):
-                    manufacturer_name = exif_dict[ifd][tag].decode("utf-8")
-                    dir_name = manufacturer_name.split(" ")[0]
+                current_tag = piexif.TAGS[ifd][tag]["name"] 
+                if (current_tag is MODEL_KEY):
+                    model_name = exif_dict[ifd][tag].decode("utf-8")
+                    dir_name = model_name.replace(" ", "_")
                     dir_path = os.path.join(base_dir_path.replace("/*", ""), dir_name)
                     file_name = f.name[f.name.rfind('/') + 1:]
                     target_path = os.path.join(dir_path, file_name)
